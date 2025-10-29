@@ -64,6 +64,7 @@ struct MinHeap {
                 data[pos] = data[2*pos + 2];
                 data[2*pos + 2] = temp;
                 pos = 2*pos + 2;
+
             }
         }
     }

@@ -105,6 +105,7 @@ int buildEncodingTree(int nextFree) {
     //    - Push new parent index back into the heap
     while (heap.size > 1) {
 
+
     }
     // 4. Return the index of the last remaining node (root)
     return 0; // placeholder
