@@ -104,17 +104,25 @@ int buildEncodingTree(int nextFree) {
     //    - Set left/right pointers
     //    - Push new parent index back into the heap
     while (heap.size > 1) {
-
+        int node1 = heap.pop(weightArr);
+        int node2 = heap.pop(weightArr);
+        int parent = node1 + node2;
+        //leftArr[0] = heap.data[0];
+        //rightArr[0] = heap.data[1];
+        weightArr[nextFree] = parent;
+        heap.push(nextFree, weightArr);
+        nextFree++;
 
     }
     // 4. Return the index of the last remaining node (root)
-    return 0; // placeholder
+    return heap.data[0]; // placeholder
 }
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
+    stack<pair<int, string>> codesStack;
     // Left edge adds '0', right edge adds '1'.
     // Record code when a leaf node is reached.
 }
