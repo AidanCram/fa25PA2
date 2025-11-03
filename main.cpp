@@ -107,8 +107,8 @@ int buildEncodingTree(int nextFree) {
         int node1 = heap.pop(weightArr);
         int node2 = heap.pop(weightArr);
         int parent = node1 + node2;
-        leftArr[j] = heap.data[0];
-        rightArr[j] = heap.data[1];
+        leftArr[j] = node1;
+        rightArr[j] = node2;
         weightArr[nextFree] = parent;
         heap.push(nextFree, weightArr);
         nextFree++;
@@ -123,8 +123,27 @@ int buildEncodingTree(int nextFree) {
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
+    int binCount = 0;
+    int i = 0;
     stack<pair<int, string>> codesStack;
+    while (leftArr[i] != -1 && rightArr[i] != -1) {
+        codesStack.push(rightArr[i]);
+        codesStack.push(leftArr[i]);
+        ++i;
+    }
+    codesStack.push(root)
+
     // Left edge adds '0', right edge adds '1'.
+    codesStack.pop();
+    for (int i = 0; i < (int)codesStack.size(); ++i) {
+        codesStack.pop();
+        if (i % 2 == 1) {
+            binCount += 1;
+        }
+
+        //if leafNode {codes['ch' - 'a'] = to_string(binary(binCount))}
+
+    }
     // Record code when a leaf node is reached.
 }
 
