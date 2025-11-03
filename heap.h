@@ -32,12 +32,12 @@ struct MinHeap {
             cout<<"Heap is Empty"<<endl;
             return -1;
         }
-        int val = weightArr[data[0]];
+        int val = data[0];
         // Replace root with last element, then call downheap()
         data[0] = data[size - 1];
         size--;
         downheap(data[0], weightArr);
-        return val; // placeholder
+        return val;
     }
 
     void upheap(int pos, int weightArr[]) {
@@ -52,14 +52,14 @@ struct MinHeap {
 
     void downheap(int pos, int weightArr[]) {
         // TODO: swap parent downward while larger than any child
-        while (weightArr[data[pos]] > weightArr[data[2*pos + 1]] || weightArr[data[pos] + 1] > weightArr[data[2*pos + 2]]) {
-            if (weightArr[data[pos]] > weightArr[data[2*pos + 1]] && weightArr[data[pos] + 1] <= weightArr[data[2*pos + 2]]) {
+        while (weightArr[data[pos]] > weightArr[data[2*pos + 1]] || weightArr[data[pos]] > weightArr[data[2*pos + 2]]) {
+            if (weightArr[data[pos]] > weightArr[data[2*pos + 1]] && weightArr[data[2*pos + 1]] <= weightArr[data[2*pos + 2]]) {
                 int temp = data[pos];
                 data[pos] = data[2*pos + 1];
                 data[2*pos + 1] = temp;
                 pos = 2*pos + 1;
             }
-            else if (weightArr[data[pos]] > weightArr[data[2*pos + 2]] && weightArr[data[pos] + 1] > weightArr[data[2*pos + 2]]) {
+            else if (weightArr[data[pos]] > weightArr[data[2*pos + 1]] && weightArr[data[2*pos + 1]] > weightArr[data[2*pos + 2]]) {
                 int temp = data[pos];
                 data[pos] = data[2*pos + 2];
                 data[2*pos + 2] = temp;

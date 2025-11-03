@@ -102,49 +102,51 @@ int buildEncodingTree(int nextFree) {
     //    - Create a new parent node with combined weight
     //    - Set left/right pointers
     //    - Push new parent index back into the heap
-    int j = 0;
     while (heap.size > 1) {
         int node1 = heap.pop(weightArr);
         int node2 = heap.pop(weightArr);
-        int parent = node1 + node2;
-        leftArr[j] = node1;
-        rightArr[j] = node2;
-        weightArr[nextFree] = parent;
-        heap.push(nextFree, weightArr);
-        nextFree++;
-        j++;
-
+        int parent = nextFree++;
+        weightArr[parent] = weightArr[node1] + weightArr[node2];
+        leftArr[parent] = node1;
+        rightArr[parent] = node2;
+        heap.push(parent, weightArr);
     }
     // 4. Return the index of the last remaining node (root)
-    return heap.data[0]; // placeholder
+    return heap.data[0];
 }
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
-    int binCount = 0;
-    int i = 0;
     stack<pair<int, string>> codesStack;
-    while (leftArr[i] != -1 && rightArr[i] != -1) {
-        codesStack.push(rightArr[i]);
-        codesStack.push(leftArr[i]);
-        ++i;
-    }
-    codesStack.push(root)
+    codesStack.push(make_pair(root, ""));
 
-    // Left edge adds '0', right edge adds '1'.
-    codesStack.pop();
-    for (int i = 0; i < (int)codesStack.size(); ++i) {
+    while (!codesStack.empty()) {
+        pair<int, string> topNode = codesStack.top();
         codesStack.pop();
-        if (i % 2 == 1) {
-            binCount += 1;
+        int nodeIdx = topNode.first;
+        string binCode = topNode.second;
+        // Left edge adds '0', right edge adds '1'.
+        // Record code when a leaf node is reached.
+        int leftChild = leftArr[nodeIdx];
+        int rightChild = rightArr[nodeIdx];
+
+        if (leftChild == -1 && rightChild == -1) {
+            char ch = charArr[nodeIdx];
+            codes[ch - 'a'] = binCode;
         }
-
-        //if leafNode {codes['ch' - 'a'] = to_string(binary(binCount))}
-
+        else if (rightChild == -1) {
+            codesStack.push(make_pair(leftChild, "0" + binCode));
+        }
+        else if (leftChild == -1) {
+            codesStack.push(make_pair(rightChild, "1" + binCode));
+        }
+        else {
+            codesStack.push(make_pair(rightChild, "1" + binCode));
+            codesStack.push(make_pair(leftChild, "0" + binCode));
+        }
     }
-    // Record code when a leaf node is reached.
 }
 
 // Step 5: Print table and encoded message
