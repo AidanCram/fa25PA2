@@ -102,14 +102,15 @@ int buildEncodingTree(int nextFree) {
     //    - Create a new parent node with combined weight
     //    - Set left/right pointers
     //    - Push new parent index back into the heap
+
     while (heap.size > 1) {
-        int node1 = heap.pop(weightArr);
-        int node2 = heap.pop(weightArr);
-        int parent = nextFree++;
-        weightArr[parent] = weightArr[node1] + weightArr[node2];
-        leftArr[parent] = node1;
-        rightArr[parent] = node2;
-        heap.push(parent, weightArr);
+        int node1 = heap.pop(weightArr); //left child
+        int node2 = heap.pop(weightArr); //right child
+        int parent = nextFree++; //index for parent node
+        weightArr[parent] = weightArr[node1] + weightArr[node2]; //Putting combined weight in next open index of weightArr
+        leftArr[parent] = node1; //Left child put in left array
+        rightArr[parent] = node2; //Right child put in right array
+        heap.push(parent, weightArr); //pushing parent index into heap
     }
     // 4. Return the index of the last remaining node (root)
     return heap.data[0];
@@ -123,26 +124,28 @@ void generateCodes(int root, string codes[]) {
     codesStack.push(make_pair(root, ""));
 
     while (!codesStack.empty()) {
-        pair<int, string> topNode = codesStack.top();
+        pair<int, string> topNode = codesStack.top(); //Allows to assign the int and string to variables
         codesStack.pop();
-        int nodeIdx = topNode.first;
-        string binCode = topNode.second;
+
+        int nodeIdx = topNode.first; //index of node
+        string binCode = topNode.second; //binary code associated with node
+
         // Left edge adds '0', right edge adds '1'.
         // Record code when a leaf node is reached.
-        int leftChild = leftArr[nodeIdx];
+        int leftChild = leftArr[nodeIdx];  //These were autofilled when I started typing leftChild
         int rightChild = rightArr[nodeIdx];
 
-        if (leftChild == -1 && rightChild == -1) {
+        if (leftChild == -1 && rightChild == -1) {  //If node is a leaf
             char ch = charArr[nodeIdx];
             codes[ch - 'a'] = binCode;
         }
-        else if (rightChild == -1) {
+        else if (rightChild == -1) { //If only has left child
             codesStack.push(make_pair(leftChild, "0" + binCode));
         }
-        else if (leftChild == -1) {
+        else if (leftChild == -1) { //If only has right child
             codesStack.push(make_pair(rightChild, "1" + binCode));
         }
-        else {
+        else { //If has both left and right child, right is pushed first so it is popped last
             codesStack.push(make_pair(rightChild, "1" + binCode));
             codesStack.push(make_pair(leftChild, "0" + binCode));
         }
