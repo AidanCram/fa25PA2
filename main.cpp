@@ -97,6 +97,8 @@ int buildEncodingTree(int nextFree) {
     for (int i = 0; i < nextFree; ++i) {
         heap.push(i, weightArr);
     }
+    heap.print(weightArr);
+
     // 3. While the heap size is greater than 1:
     //    - Pop two smallest nodes
     //    - Create a new parent node with combined weight
@@ -105,12 +107,26 @@ int buildEncodingTree(int nextFree) {
 
     while (heap.size > 1) {
         int node1 = heap.pop(weightArr); //left child
+        heap.print(weightArr);
         int node2 = heap.pop(weightArr); //right child
+        heap.print(weightArr);
         int parent = nextFree++; //index for parent node
-        weightArr[parent] = weightArr[node1] + weightArr[node2]; //Putting combined weight in next open index of weightArr
+        weightArr[parent] = weightArr[node1] + weightArr[node2]; //Putting combined weight in next open index of weightArr to be pushed into heap
+
+
+        cout<<"weightArr[node1] is "<<weightArr[node1]<<"\n";
+        cout<<"weightArr[node2] is "<<weightArr[node2]<<"\n";
+        cout<<"weightArr[parent] is "<<weightArr[parent]<<"\n";
+
+
         leftArr[parent] = node1; //Left child put in left array
         rightArr[parent] = node2; //Right child put in right array
+
+        cout<<"leftArr[parent] is "<<leftArr[parent]<<"\n";
+        cout<<"rightArr[parent] is "<<rightArr[parent]<<"\n";
+
         heap.push(parent, weightArr); //pushing parent index into heap
+        heap.print(weightArr);
     }
     // 4. Return the index of the last remaining node (root)
     return heap.data[0];
@@ -129,25 +145,26 @@ void generateCodes(int root, string codes[]) {
 
         int nodeIdx = topNode.first; //index of node
         string binCode = topNode.second; //binary code associated with node
+        cout << topNode.first << " " << topNode.second << "\n";
 
         // Left edge adds '0', right edge adds '1'.
         // Record code when a leaf node is reached.
-        int leftChild = leftArr[nodeIdx];  //These were autofilled when I started typing leftChild
+        int leftChild = leftArr[nodeIdx];  //These were autofilled when I started typing leftChild, seemed to work
         int rightChild = rightArr[nodeIdx];
 
         if (leftChild == -1 && rightChild == -1) {  //If node is a leaf
-            char ch = charArr[nodeIdx];
-            codes[ch - 'a'] = binCode;
+            char ch = charArr[nodeIdx]; //Gets the letter at the index
+            codes[ch - 'a'] = binCode; //Letters have decimal values, this subtracts a's value from char to get an index
         }
         else if (rightChild == -1) { //If only has left child
-            codesStack.push(make_pair(leftChild, "0" + binCode));
+            codesStack.push(make_pair(leftChild, binCode + "0"));
         }
         else if (leftChild == -1) { //If only has right child
-            codesStack.push(make_pair(rightChild, "1" + binCode));
+            codesStack.push(make_pair(rightChild, binCode + "1"));
         }
-        else { //If has both left and right child, right is pushed first so it is popped last
-            codesStack.push(make_pair(rightChild, "1" + binCode));
-            codesStack.push(make_pair(leftChild, "0" + binCode));
+        else { //If has both left and right child, right is pushed first so it is popped after left
+            codesStack.push(make_pair(rightChild, binCode + "1"));
+            codesStack.push(make_pair(leftChild, binCode + "0"));
         }
     }
 }
