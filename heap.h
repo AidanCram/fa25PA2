@@ -23,7 +23,6 @@ struct MinHeap {
         data[size] = idx;
         size++;
         upheap(size - 1, weightArr);
-
     }
 
     int pop(int weightArr[]) {

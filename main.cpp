@@ -111,6 +111,7 @@ int buildEncodingTree(int nextFree) {
         weightArr[parent] = weightArr[node1] + weightArr[node2]; //Putting combined weight in next open index of weightArr
                                                                 //to be pushed into heap
 
+
         leftArr[parent] = node1; //Left child put in left array
         rightArr[parent] = node2; //Right child put in right array
 
