@@ -33,7 +33,6 @@ struct MinHeap {
             return -1;
         }
         int val = data[0];
-        cout<<"Popped element: "<<val<<endl;
         // Replace root with last element, then call downheap()
         data[0] = data[size - 1];
         size--;
@@ -68,17 +67,6 @@ struct MinHeap {
             swap(data[pos], data[smallVal]);
             pos = smallVal;
         }
-    }
-    void print(int weightArr[]) {
-        for (int i = 0; i < size; ++i) {
-            cout<<data[i];
-        }
-        cout<<"\n";
-        for (int i = 0; i < size; ++i) {
-            cout<<weightArr[data[i]];
-        }
-        cout<<"\n";
-        cout<<"size = "<<size<<endl;
     }
 };
 

@@ -97,7 +97,6 @@ int buildEncodingTree(int nextFree) {
     for (int i = 0; i < nextFree; ++i) {
         heap.push(i, weightArr);
     }
-    heap.print(weightArr);
 
     // 3. While the heap size is greater than 1:
     //    - Pop two smallest nodes
@@ -107,26 +106,15 @@ int buildEncodingTree(int nextFree) {
 
     while (heap.size > 1) {
         int node1 = heap.pop(weightArr); //left child
-        heap.print(weightArr);
         int node2 = heap.pop(weightArr); //right child
-        heap.print(weightArr);
         int parent = nextFree++; //index for parent node
-        weightArr[parent] = weightArr[node1] + weightArr[node2]; //Putting combined weight in next open index of weightArr to be pushed into heap
-
-
-        cout<<"weightArr[node1] is "<<weightArr[node1]<<"\n";
-        cout<<"weightArr[node2] is "<<weightArr[node2]<<"\n";
-        cout<<"weightArr[parent] is "<<weightArr[parent]<<"\n";
-
+        weightArr[parent] = weightArr[node1] + weightArr[node2]; //Putting combined weight in next open index of weightArr
+                                                                //to be pushed into heap
 
         leftArr[parent] = node1; //Left child put in left array
         rightArr[parent] = node2; //Right child put in right array
 
-        cout<<"leftArr[parent] is "<<leftArr[parent]<<"\n";
-        cout<<"rightArr[parent] is "<<rightArr[parent]<<"\n";
-
         heap.push(parent, weightArr); //pushing parent index into heap
-        heap.print(weightArr);
     }
     // 4. Return the index of the last remaining node (root)
     return heap.data[0];
@@ -145,7 +133,6 @@ void generateCodes(int root, string codes[]) {
 
         int nodeIdx = topNode.first; //index of node
         string binCode = topNode.second; //binary code associated with node
-        cout << topNode.first << " " << topNode.second << "\n";
 
         // Left edge adds '0', right edge adds '1'.
         // Record code when a leaf node is reached.
